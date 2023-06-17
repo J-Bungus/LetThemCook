@@ -10,6 +10,7 @@ as much as possible.
 
 from bs4 import BeautifulSoup as bs
 import requests as req
+from tqdm import tqdm
 
 from class_definition import RecipeData, id
 
@@ -22,8 +23,10 @@ def generate_urls():
     for i in range(9, 12974):
         url_list.append(BASE_URL + str(i))
 
+    """
     for i in range (1012377, 1022498):
         url_list.append(BASE_URL + str(i))
+    """
 
     return url_list
 
@@ -34,10 +37,14 @@ def scrape_recipes(url_list):
     recipes_data= []
 
     with open('./recipes.csv', 'a') as f:
-        for url in url_list:
-            print(f"Attempting to Scrape: {url}")
+        for url in tqdm(url_list):
+            #print(f"Attempting to Scrape: {url}")
 
-            r = req.get(url)
+            try:
+                r = req.get(url)
+            except ConnectionError:
+                print(f"No recipe from {url}")
+                continue
             soup = bs(r.text, 'html.parser')
 
             instruction_element = soup.find_all('p', class_='pantry--body-long')
@@ -61,7 +68,13 @@ def scrape_recipes(url_list):
 
                 quantity_element = quantity_element.find_next('span', class_='ingredient_quantity__wlL75')
 
-            recipe = RecipeData(id, "Recipe_Name_PLACEHOLDER", ingredients, instructions, url, time)
+            try:
+                recipe_name = soup.find('h1', class_='pantry--title-display').get_text()
+            except AttributeError:
+                print(f"No recipe from: {url}")
+                continue
+
+            recipe = RecipeData(id, recipe_name, ingredients, instructions, url, time)
         
             recipe.write_file(f)
             recipes_data.append(recipe)
