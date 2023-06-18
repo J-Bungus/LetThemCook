@@ -6,7 +6,10 @@ import Navbar from '@/components/navbar'
 export default function Home() {
   return (
     <main
-      className="bg-pale-green min-h-screen font-sans urbanist.className"
+      className="
+        bg-pale-green 
+        min-h-screen 
+        font-sans"
     >
       <div className={urbanist.className}>
         <Navbar />

@@ -13,7 +13,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <ChakraProvider 
       className={urbanist.className} 
-      >
+    >
       <Component {...pageProps} />
     </ChakraProvider>
   )

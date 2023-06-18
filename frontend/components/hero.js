@@ -3,25 +3,26 @@ import hero from "../public/hero.png"
 import { Flex } from '@chakra-ui/react'
 import ButtonUnit from './button'
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-import RestaurantMenuIcon from '@mui/icons-material/RestaurantMenu';
+import SearchBar from './searchbar';
+import Ingredients from '../../backend/ingredients.json';
 
 function Hero() {
     return (
-        <Flex align="center" justify="space-around" gap="10">
-            <div>
-                <Flex direction="column">
-                    <h1 className="text-5xl p-20">What are we starting with today?</h1>
-                    <Flex justify="center" gap="10">
-                        <ButtonUnit icon={<RestaurantMenuIcon/> } name="Ingredients" size="lg"/>
-                        <ButtonUnit icon={<FormatListBulletedIcon/> } name="Recipes" size="lg"/>
-                    </Flex>
-                </Flex>
-            </div>
-            <div className="w-2/4">
-                <Image 
-                    src={hero} 
-                />
-            </div>
+        <Flex direction="column" gap="10">
+            <Flex align="center" justify="center">
+                <div>
+                    <h1 className="text-5xl p-10">What are we cooking with today?</h1>
+                </div>
+                <div className="w-2/4">
+                    <Image 
+                        src={hero} 
+                    />
+                </div>
+            </Flex>
+            <Flex justify="center" gap="20">
+                <SearchBar data={Ingredients}/>
+                <ButtonUnit padding="px-16 py-12" url="/recipes" icon={<FormatListBulletedIcon/> } name="Recipes" size="lg"/>
+            </Flex>
         </Flex>
     )
 }
